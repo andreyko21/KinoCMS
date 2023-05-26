@@ -1,0 +1,13 @@
+{
+  "trailingComma": "none",
+  "tabWidth": 2,
+  "endOfLine": "lf",
+  "printWidth": 100,
+  "singleQuote": true,
+  "semi": false,
+  "arrowParens": "always",
+  "functionParenNewline": true,
+  "spaceBeforeFunctionParen": true,
+  "anonymous": "always",
+  "named": "never"
+}
