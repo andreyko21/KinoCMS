@@ -27,28 +27,26 @@
       :error="v$.localCondition.$error ? 'Поле є обовязковим' : ''"
     />
     <img-component
-      v-model="localLogoImg"
+      v-model:imgObject="localLogoImg"
       :class="{ 'is-invalid': v$.localLogoImg.$error }"
       class="mt-3"
-      @deleteMainPicture="delImage"
+      v-model:deleteList="localListDeleteImages"
       title="Логотип"
     ></img-component>
     <p v-if="v$.localLogoImg.$error" class="error-message">Виберіть картинку</p>
     <img-component
-      v-model="localTopBannerImg"
+      v-model:imgObject="localTopBannerImg"
       :class="{ 'is-invalid': v$.localTopBannerImg.$error }"
       class="mt-3"
-      @deleteMainPicture="delImage"
+      v-model:deleteList="localListDeleteImages"
       title="Верхній банер"
     ></img-component>
     <p v-if="v$.localTopBannerImg.$error" class="error-message">Виберіть картинку</p>
     <imgs-component
-      v-model="localGalleryImg"
+      v-model:imgsArray="localGalleryImg"
       :class="{ 'is-invalid': v$.localGalleryImg.$error }"
       class="mt-3"
-      @newImage="addImage"
-      @delImage="delImage"
-      @changeImage="changeImage"
+      v-model:deleteList="localListDeleteImages"
     ></imgs-component>
     <p v-if="v$.localGalleryImg.$error" class="error-message">Виберіть картинку</p>
     <list-halls v-model="localListHalls" @deleteHall="DeleteHall" @open="OpenHall"></list-halls>
@@ -68,7 +66,6 @@
 </template>
 
 <script>
-
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import inputComponent from '@/components/UI/input-component.vue'
@@ -134,7 +131,18 @@ export default {
       })
 
       watch(
-        [localName, localDescription, localCondition, localLogoImg, localTopBannerImg, localTopBannerImg, localGalleryImg, localListHalls, localSEO, localListDeleteImages],
+        [
+          localName,
+          localDescription,
+          localCondition,
+          localLogoImg,
+          localTopBannerImg,
+          localTopBannerImg,
+          localGalleryImg,
+          localListHalls,
+          localSEO,
+          localListDeleteImages
+        ],
         updateModel
       )
 
@@ -170,21 +178,6 @@ export default {
     },
     OpenHall (id) {
       this.$emit('open', id)
-    },
-    addImage (newImage) {
-      this.localGalleryImg.push(newImage)
-    },
-    delImage (value) {
-      if (this.localListDeleteImages && this.localListDeleteImages.length) {
-        this.localListDeleteImages.push(value)
-      } else {
-        this.localListDeleteImages = []
-        this.localListDeleteImages.push(value)
-      }
-    },
-    changeImage (newImage) {
-      this.localGalleryImg = this.localGalleryImg.map(image =>
-        image.id === newImage.id ? newImage : image)
     },
     Save () {
       this.v$.$validate()

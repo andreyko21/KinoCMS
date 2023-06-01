@@ -40,9 +40,7 @@ export default {
   },
   data () {
     return {
-      links: [
-        { url: '/Profile', name: 'Мій кабінет', icon: 'fas fa-user-circle' }
-      ]
+      links: [{ url: '/Profile', name: 'Мій кабінет', icon: 'fas fa-user-circle' }]
     }
   }
 }

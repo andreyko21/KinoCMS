@@ -1,5 +1,4 @@
 <template>
-  <div>Новини</div>
   <list-news></list-news>
 </template>
 <script>

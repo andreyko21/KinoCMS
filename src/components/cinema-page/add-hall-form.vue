@@ -18,38 +18,34 @@
       :error="v$.localDescription.$error ? 'Поле є обовязковим' : ''"
     />
     <img-component
-      v-model="localSchemeHallImg"
+      v-model:imgObject="localSchemeHallImg"
       :class="{ 'is-invalid': v$.localSchemeHallImg.$error }"
       class="mt-3"
-      @deleteMainPicture="delImage"
+      v-model:deleteList="localListDeleteImages"
       title="Схема зала"
     ></img-component>
-    <p v-if="v$.localSchemeHallImg.$error" class="error-message">
-      Виберіть картинку
-    </p>
+    <p v-if="v$.localSchemeHallImg.$error" class="error-message">Виберіть картинку</p>
     <img-component
-      v-model="localTopBannerImg"
+      v-model:imgObject="localTopBannerImg"
       :class="{ 'is-invalid': v$.localTopBannerImg.$error }"
       class="mt-3"
-      @deleteMainPicture="delImage"
+      v-model:deleteList="localListDeleteImages"
       title="Верхній банер"
     ></img-component>
-    <p v-if="v$.localTopBannerImg.$error" class="error-message">
-      Виберіть картинку
-    </p>
+    <p v-if="v$.localTopBannerImg.$error" class="error-message">Виберіть картинку</p>
     <imgs-component
-      v-model="localGalleryImg"
+      v-model:imgsArray="localGalleryImg"
       :class="{ 'is-invalid': v$.localGalleryImg.$error }"
       class="mt-3"
-      @newImage="addImage"
-      @delImage="delImage"
-      @changeImage="changeImage"
+      v-model:deleteList="localListDeleteImages"
     ></imgs-component>
-    <p v-if="v$.localGalleryImg.$error" class="error-message">
-      Виберіть картинку
-    </p>
+    <p v-if="v$.localGalleryImg.$error" class="error-message">Виберіть картинку</p>
     <seo-component v-model="localSEO"></seo-component>
-    <button type="button" @click="$emit('resetHall', hallData.id)" class="btn btn-xs btn-warning col fileinput-button">
+    <button
+      type="button"
+      @click="$emit('resetHall', hallData.id)"
+      class="btn btn-xs btn-warning col fileinput-button"
+    >
       <span>Скинути зміни</span>
     </button>
     <button type="button" @click="Save" class="btn btn-xs btn-success col fileinput-button">
@@ -80,29 +76,29 @@ export default {
   props: {
     hallData: {
       type: Object,
-      default: () => ({ id: 'New_Hall', name: '', dateCreate: '', description: '', schemeHallImg: {}, topBannerImg: {}, listDeleteImages: [], galleryImg: [], seo: {} })
+      default: () => ({
+        id: 'New_Hall',
+        name: '',
+        dateCreate: '',
+        description: '',
+        schemeHallImg: {},
+        topBannerImg: {},
+        listDeleteImages: [],
+        galleryImg: [],
+        seo: {}
+      })
     }
   },
   setup (props, { emit }) {
     const v$ = useVuelidate()
     const localId = ref(props.hallData.id)
     const localName = ref(props.hallData.name)
-    const localDescription = ref(
-      props.hallData.description
-    )
-    const localSchemeHallImg = ref(
-      props.hallData.schemeHallImg
-    )
-    const localTopBannerImg = ref(
-      props.hallData.topBannerImg
-    )
-    const localGalleryImg = ref(
-      props.hallData.galleryImg
-    )
+    const localDescription = ref(props.hallData.description)
+    const localSchemeHallImg = ref(props.hallData.schemeHallImg)
+    const localTopBannerImg = ref(props.hallData.topBannerImg)
+    const localGalleryImg = ref(props.hallData.galleryImg)
     const localSEO = ref(props.hallData.seo)
-    const localListDeleteImages = ref(
-      props.hallData.listDeleteImages
-    )
+    const localListDeleteImages = ref(props.hallData.listDeleteImages)
 
     const updateModel = () => {
       emit('hallData', {
@@ -120,17 +116,12 @@ export default {
     watchEffect(() => {
       localId.value = props.hallData.id
       localName.value = props.hallData.name
-      localDescription.value =
-        props.hallData.description
-      localSchemeHallImg.value =
-        props.hallData.schemeHallImg
-      localTopBannerImg.value =
-        props.hallData.topBannerImg
-      localGalleryImg.value =
-        props.hallData.galleryImg
+      localDescription.value = props.hallData.description
+      localSchemeHallImg.value = props.hallData.schemeHallImg
+      localTopBannerImg.value = props.hallData.topBannerImg
+      localGalleryImg.value = props.hallData.galleryImg
       localSEO.value = props.hallData.seo
-      localListDeleteImages.value =
-        props.hallData.listDeleteImages || []
+      localListDeleteImages.value = props.hallData.listDeleteImages || []
     })
 
     watch(

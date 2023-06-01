@@ -1,6 +1,7 @@
 <template>
   <table-component
-    title="Список новин"
+    title="Список сторінок"
+    :part="part"
     :isLoading="isLoading"
     v-model="table"
     @delete="Delete"
@@ -10,7 +11,7 @@
 </template>
 
 <script>
-import { newsEnCollectionRef, newsUaCollectionRef } from '@/js/collections.js'
+import { pagesUaCollectionRef, pagesEnCollectionRef } from '@/js/collections.js'
 import tableComponent from './table-component.vue'
 import { CloudFirestore } from '@/js/cloudFirestore'
 import { CloudStorage } from '@/js/cloudStorage'
@@ -22,6 +23,7 @@ export default {
   },
   data () {
     return {
+      part: 'Pages',
       isLoading: false,
       cloudFirestore: new CloudFirestore(),
       cloudStorage: new CloudStorage(),
@@ -49,17 +51,17 @@ export default {
       this.deleteElement = fileName
       console.log(fileName)
       this.showWarning = true
-      await this.cloudStorage.DeleteFolderInFirebaseStorage(`News/En/${fileName}`)
-      await this.cloudStorage.DeleteFolderInFirebaseStorage(`News/Ua/${fileName}`)
-      await this.cloudFirestore.DeleteDocument(newsEnCollectionRef, fileName)
-      await this.cloudFirestore.DeleteDocument(newsUaCollectionRef, fileName)
+      await this.cloudStorage.DeleteFolderInFirebaseStorage(`${this.part}/En/${fileName}`)
+      await this.cloudStorage.DeleteFolderInFirebaseStorage(`${this.part}/Ua/${fileName}`)
+      await this.cloudFirestore.DeleteDocument(pagesEnCollectionRef, fileName)
+      await this.cloudFirestore.DeleteDocument(pagesUaCollectionRef, fileName)
       this.GetList()
       this.isLoading = false
     },
     async GetList () {
       try {
         this.isLoading = true
-        const result = await this.cloudFirestore.GetAllDocuments(newsEnCollectionRef)
+        const result = await this.cloudFirestore.GetAllDocuments(pagesEnCollectionRef)
         this.table.tbody = result.docs.map((doc) => doc.data())
         this.isLoading = false
       } catch (error) {

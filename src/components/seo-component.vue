@@ -61,10 +61,10 @@ export default {
 
     const updateModel = () => {
       emit('update:modelValue', {
-        link: localLink.value,
-        title: localTitle.value,
-        keywords: localKeywords.value,
-        description: localDescription.value
+        link: localLink.value ? localLink.value : '',
+        title: localTitle.value ? localTitle.value : '',
+        keywords: localKeywords.value ? localKeywords.value : '',
+        description: localDescription.value ? localDescription.value : ''
       })
     }
 

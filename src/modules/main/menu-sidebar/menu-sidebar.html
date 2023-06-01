@@ -17,24 +17,6 @@
                             <i v-if="category.pages.length" class="right fas fa-angle-left"></i>
                         </router-link>
                     </li>
-                    <li class="nav-item" v-else :class="{'menu-is-opening menu-open': category.open}">
-                        <a :class="{ 'active': $route.path === category.url }" href="#"
-                            class="nav-link" @click="category.open = !category.open">
-                            <i class="nav-icon" :class="category.icon"></i>
-                            <p>
-                                {{ category.name }}
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview" >
-                            <li class="nav-item" v-for="page in category.pages" :key="page.url">
-                                <a href="#" class="nav-link" :class="{ 'active': $route.path === page.url }">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ page.name }}</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 </div>
             </ul>
         </nav>

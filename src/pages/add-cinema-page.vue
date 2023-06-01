@@ -1,13 +1,23 @@
 <template>
   <card :title="title" :isLoading="isLoading">
     <template #tools>
-      <button class="btn btn-block btn-secondary" v-if="CurrentComponent.name == 'add-hall-form'" @click="SetCurrentComponent()" >Повернутися до створення кінотеатра</button>
+      <button
+        class="btn btn-block btn-secondary"
+        v-if="CurrentComponent.name == 'add-hall-form'"
+        @click="SetCurrentComponent()"
+      >
+        Повернутися до створення кінотеатра
+      </button>
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label
           v-for="language in languages"
           :key="language.id"
           class="btn btn-secondary"
-          :class="{ active: language.checked, 'is-invalid': v$.languages[language.value].$error || v$.changeHall[language.value].$error }"
+          :class="{
+            active: language.checked,
+            'is-invalid':
+              v$.languages[language.value].$error || v$.changeHall[language.value].$error
+          }"
         >
           <input
             type="radio"
@@ -22,11 +32,20 @@
     </template>
     <template #body>
       <form action="" @submit.prevent="Save">
-      <component :is="CurrentComponent" :hallData="changeHall[currentLanguage.value]" @resetHall="ResetHall" @resetCinema="ResetCinema" @saveHall="SaveHall" @hallData="HallUpdate" v-model="currentLanguage.data" @open="OpenHall" @deleteHall="DeleteHall"></component>
-    </form>
+        <component
+          :is="CurrentComponent"
+          :hallData="changeHall[currentLanguage.value]"
+          @resetHall="ResetHall"
+          @resetCinema="ResetCinema"
+          @saveHall="SaveHall"
+          @hallData="HallUpdate"
+          v-model="currentLanguage.data"
+          @open="OpenHall"
+          @deleteHall="DeleteHall"
+        ></component>
+      </form>
     </template>
-    <template #footer>
-    </template>
+    <template #footer> </template>
   </card>
 </template>
 
@@ -77,8 +96,7 @@ export default {
             logoImg: {},
             topBannerImg: {},
             galleryImg: [],
-            listHalls: [
-            ],
+            listHalls: [],
             seo: {},
             listDeleteImages: []
           }
@@ -95,8 +113,7 @@ export default {
             logoImg: {},
             topBannerImg: {},
             galleryImg: [],
-            listHalls: [
-            ],
+            listHalls: [],
             seo: {},
             listDeleteImages: []
           }
@@ -105,7 +122,6 @@ export default {
     }
   },
   validations: {
-
     changeHall: {
       Ua: {
         name: { required },
@@ -177,13 +193,11 @@ export default {
       if (await this.v$.changeHall.$validate()) {
         this.changeHall.Ua.dateCreate = DateTime.now().toFormat('dd.LL.yyyy')
         this.changeHall.En.dateCreate = DateTime.now().toFormat('dd.LL.yyyy')
-        if (this.languages.En.data.listHalls.some(element => element.id === id)) {
-          const index = this.languages.Ua.data.listHalls.findIndex(element => element.id === id)
+        if (this.languages.En.data.listHalls.some((element) => element.id === id)) {
+          const index = this.languages.Ua.data.listHalls.findIndex((element) => element.id === id)
           this.languages.Ua.data.listHalls[index] = this.changeHall.Ua
           this.languages.En.data.listHalls[index] = this.changeHall.En
         } else {
-          this.changeHall.Ua.dataStatus = 'new'
-          this.changeHall.En.dataStatus = 'new'
           this.languages.Ua.data.listHalls.push(this.changeHall.Ua)
           this.languages.En.data.listHalls.push(this.changeHall.En)
         }
@@ -194,7 +208,9 @@ export default {
       }
     },
     ResetHall (id) {
-      this.changeHall[this.currentLanguage.value] = this.languages[this.currentLanguage.value].data.listHalls.find(item => item.id === id)
+      this.changeHall[this.currentLanguage.value] = this.languages[
+        this.currentLanguage.value
+      ].data.listHalls.find((item) => item.id === id)
       toastr.warning('Дані скинуто')
     },
     HallUpdate (data) {
@@ -202,38 +218,62 @@ export default {
     },
     DeleteHall (id) {
       console.log(id)
-      this.languages.Ua.data.listHalls = this.languages.Ua.data.listHalls.filter(hall => hall.id !== id)
-      this.languages.En.data.listHalls = this.languages.En.data.listHalls.filter(hall => hall.id !== id)
+      this.languages.Ua.data.listHalls = this.languages.Ua.data.listHalls.filter(
+        (hall) => hall.id !== id
+      )
+      this.languages.En.data.listHalls = this.languages.En.data.listHalls.filter(
+        (hall) => hall.id !== id
+      )
       this.hallDeleteList.push(id)
     },
     OpenHall (id) {
       console.log(id)
       if (id !== 'New_Hall') {
-        this.changeHall.En = this.languages.En.data.listHalls.find(item => item.id === id)
-        this.changeHall.Ua = this.languages.Ua.data.listHalls.find(item => item.id === id)
+        this.changeHall.En = this.languages.En.data.listHalls.find((item) => item.id === id)
+        this.changeHall.Ua = this.languages.Ua.data.listHalls.find((item) => item.id === id)
       } else {
-        this.changeHall.En = { id: GenerateID(), name: '', description: '', schemeHallImg: {}, topBannerImg: {}, galleryImg: [], seo: {} }
-        this.changeHall.Ua = { id: GenerateID(), name: '', description: '', schemeHallImg: {}, topBannerImg: {}, galleryImg: [], seo: {} }
+        this.changeHall.En = {
+          id: GenerateID(),
+          name: '',
+          description: '',
+          schemeHallImg: {},
+          topBannerImg: {},
+          galleryImg: [],
+          seo: {}
+        }
+        this.changeHall.Ua = {
+          id: GenerateID(),
+          name: '',
+          description: '',
+          schemeHallImg: {},
+          topBannerImg: {},
+          galleryImg: [],
+          seo: {}
+        }
       }
       this.CurrentComponent = markRaw(AddHallForm)
     },
     GetCinema (language) {
-      this.cloudFirestore.getDocument(language.collection, this.$route.params.cinemaId).then((document) => {
-        if (document) {
-          Object.assign(language.data, document)
-        } else if (this.$route.params.cinemaId !== 'New_Cinema') {
-          this.$router.push('/Cinemas')
-        }
-      })
+      this.cloudFirestore
+        .getDocument(language.collection, this.$route.params.cinemaId)
+        .then((document) => {
+          if (document) {
+            Object.assign(language.data, document)
+          } else if (this.$route.params.cinemaId !== 'New_Cinema') {
+            this.$router.push('/Cinemas')
+          }
+        })
     },
     GetHall (language) {
-      this.cloudFirestore.getDocument(language.collection, this.$route.params.cinemaId).then((document) => {
-        if (document) {
-          Object.assign(language.data.listHalls, document.listHalls)
-        } else if (this.$route.params.cinemaId !== 'New_Cinema') {
-          this.$router.push('/Cinemas')
-        }
-      })
+      this.cloudFirestore
+        .getDocument(language.collection, this.$route.params.cinemaId)
+        .then((document) => {
+          if (document) {
+            Object.assign(language.data.listHalls, document.listHalls)
+          } else if (this.$route.params.cinemaId !== 'New_Cinema') {
+            this.$router.push('/Cinemas')
+          }
+        })
     },
     changeLanguage (selectedLanguage) {
       if (this.languages.Ua.name === selectedLanguage.name) {
@@ -270,7 +310,7 @@ export default {
         }
       }
     },
-    async  AddFirebaseData (data, collection) {
+    async AddFirebaseData (data, collection) {
       const docData = await {
         fileName: this.id,
         name: data.name,
@@ -302,49 +342,97 @@ export default {
         }
 
         // Видалення картинок
-        await this.DeleteFirebaseImages(this.languages.Ua.data.listDeleteImages, `cinemas/${this.languages.Ua.value}/${this.id}`)
+        await this.DeleteFirebaseImages(
+          this.languages.Ua.data.listDeleteImages,
+          `cinemas/${this.languages.Ua.value}/${this.id}`
+        )
         this.languages.Ua.data.listDeleteImages = []
 
         for (const hall of this.languages.Ua.data.listHalls) {
-          await this.DeleteFirebaseImages(hall.listDeleteImages, `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`)
+          await this.DeleteFirebaseImages(
+            hall.listDeleteImages,
+            `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`
+          )
           hall.listDeleteImages = []
         }
         // Збереження Укр кінотеатр
-        await this.AddFirebaseImage(this.languages.Ua.data.logoImg, `cinemas/${this.languages.Ua.value}/${this.id}`)
-        await this.AddFirebaseImage(this.languages.Ua.data.topBannerImg, `cinemas/${this.languages.Ua.value}/${this.id}`)
-        await this.AddFirebaseImages(this.languages.Ua.data.galleryImg, `cinemas/${this.languages.Ua.value}/${this.id}`)
+        await this.AddFirebaseImage(
+          this.languages.Ua.data.logoImg,
+          `cinemas/${this.languages.Ua.value}/${this.id}`
+        )
+        await this.AddFirebaseImage(
+          this.languages.Ua.data.topBannerImg,
+          `cinemas/${this.languages.Ua.value}/${this.id}`
+        )
+        await this.AddFirebaseImages(
+          this.languages.Ua.data.galleryImg,
+          `cinemas/${this.languages.Ua.value}/${this.id}`
+        )
 
         for (const hall of this.languages.Ua.data.listHalls) {
-          await this.AddFirebaseImage(hall.schemeHallImg, `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImage(
+            hall.schemeHallImg,
+            `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`
+          )
         }
         for (const hall of this.languages.Ua.data.listHalls) {
-          await this.AddFirebaseImage(hall.topBannerImg, `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImage(
+            hall.topBannerImg,
+            `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`
+          )
         }
         for (const hall of this.languages.Ua.data.listHalls) {
-          await this.AddFirebaseImages(hall.galleryImg, `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImages(
+            hall.galleryImg,
+            `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`
+          )
         }
         await this.AddFirebaseData(this.languages.Ua.data, cinemasUaCollectionRef)
 
         // Збереження Анг кінотеатр
-        await this.DeleteFirebaseImages(this.languages.En.data.listDeleteImages, `cinemas/${this.languages.En.value}/${this.id}`)
+        await this.DeleteFirebaseImages(
+          this.languages.En.data.listDeleteImages,
+          `cinemas/${this.languages.En.value}/${this.id}`
+        )
         this.languages.En.data.listDeleteImages = []
         for (const hall of this.languages.Ua.data.listHalls) {
-          await this.DeleteFirebaseImages(hall.listDeleteImages, `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`)
+          await this.DeleteFirebaseImages(
+            hall.listDeleteImages,
+            `cinemas/${this.languages.Ua.value}/${this.id}/${hall.id}`
+          )
           hall.listDeleteImages = []
         }
 
-        await this.AddFirebaseImage(this.languages.En.data.logoImg, `cinemas/${this.languages.En.value}/${this.id}`)
-        await this.AddFirebaseImage(this.languages.En.data.topBannerImg, `cinemas/${this.languages.En.value}/${this.id}`)
-        await this.AddFirebaseImages(this.languages.En.data.galleryImg, `cinemas/${this.languages.En.value}/${this.id}`)
+        await this.AddFirebaseImage(
+          this.languages.En.data.logoImg,
+          `cinemas/${this.languages.En.value}/${this.id}`
+        )
+        await this.AddFirebaseImage(
+          this.languages.En.data.topBannerImg,
+          `cinemas/${this.languages.En.value}/${this.id}`
+        )
+        await this.AddFirebaseImages(
+          this.languages.En.data.galleryImg,
+          `cinemas/${this.languages.En.value}/${this.id}`
+        )
 
         for (const hall of this.languages.En.data.listHalls) {
-          await this.AddFirebaseImage(hall.schemeHallImg, `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImage(
+            hall.schemeHallImg,
+            `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`
+          )
         }
         for (const hall of this.languages.En.data.listHalls) {
-          await this.AddFirebaseImage(hall.topBannerImg, `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImage(
+            hall.topBannerImg,
+            `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`
+          )
         }
         for (const hall of this.languages.En.data.listHalls) {
-          await this.AddFirebaseImages(hall.galleryImg, `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`)
+          await this.AddFirebaseImages(
+            hall.galleryImg,
+            `cinemas/${this.languages.En.value}/${this.id}/${hall.id}`
+          )
         }
         await this.AddFirebaseData(this.languages.En.data, cinemasEnCollectionRef)
         toastr.success('Дані успішно збережено')
@@ -362,7 +450,7 @@ export default {
   border: 1px solid rgb(129, 0, 0);
   border-radius: 5px;
   background: red;
-  &.active{
+  &.active {
     border: 1px solid rgb(173, 0, 0) !important;
     background: rgb(114, 6, 6) !important;
   }

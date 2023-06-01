@@ -11,7 +11,7 @@
     </div>
     <slot name="footer" v-if="footer"></slot>
     <div v-if="isLoading" class="overlay">
-      <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+      <i class="fas fa-3x fa-sync-alt fa-spin"></i>
     </div>
   </div>
 </template>
@@ -39,6 +39,12 @@ export default {
 .card-tools {
   display: flex;
   align-items: center;
-  gap: 20px;
+}
+.card-title {
+  font-size: 30px;
+}
+
+.overlay {
+  background: rgba(255, 255, 255, 0.808) !important;
 }
 </style>

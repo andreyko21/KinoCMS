@@ -37,5 +37,9 @@ export default {
 </script>
 
 <style>
-
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.2em;
+}
 </style>

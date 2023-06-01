@@ -5,18 +5,16 @@
 </template>
 <script>
 import 'overlayscrollbars/overlayscrollbars.css'
-import {
-  OverlayScrollbars
-} from 'overlayscrollbars'
+import { OverlayScrollbars } from 'overlayscrollbars'
 
 export default {
   mounted () {
-    OverlayScrollbars(document.body, {
-    })
+    OverlayScrollbars(document.body, {})
   }
 }
 </script>
 <style>
-#app {
+.wrapper {
+  overflow: hidden;
 }
 </style>

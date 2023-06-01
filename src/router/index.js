@@ -42,15 +42,80 @@ const routes = [
       },
       {
         path: 'News',
-        component: () => import('@/pages/news-page.vue')
+        children: [
+          {
+            path: '',
+            component: () => import('@/pages/news/news-page.vue')
+          },
+          {
+            path: ':NewsId',
+            component: () => import('@/pages/news/add-news-page.vue'),
+            name: 'News_Element'
+          }
+        ]
       },
       {
         path: 'Promotions',
-        component: () => import('@/pages/promotions-page.vue')
+        children: [
+          {
+            path: '',
+            component: () => import('@/pages/promotions/promotions-page.vue')
+          },
+          {
+            path: ':PromotionsId',
+            component: () => import('@/pages/promotions/add-promotions-page.vue'),
+            name: 'Promotions_Element'
+          }
+        ]
       },
       {
-        path: 'AllPages',
-        component: () => import('@/pages/all-pages-page.vue')
+        path: '/Pages',
+        children: [
+          {
+            path: '',
+            component: () => import('@/pages/all-pages/all-pages.vue')
+          },
+          {
+            path: 'Main',
+            component: () => import('@/pages/all-pages/main-page.vue'),
+            name: 'Main_page'
+          },
+          {
+            path: 'About',
+            component: () => import('@/pages/all-pages/about-cinema-page.vue'),
+            name: 'About_page'
+          },
+          {
+            path: 'Cafe_Bar',
+            component: () => import('@/pages/all-pages/cafe-bar-page.vue'),
+            name: 'Cafe_Bar_page'
+          },
+          {
+            path: 'Vip_Hall',
+            component: () => import('@/pages/all-pages/vip-hall-page.vue'),
+            name: 'Vip_Hall_page'
+          },
+          {
+            path: 'Advertising',
+            component: () => import('@/pages/all-pages/advertising-page.vue'),
+            name: 'Advertising_page'
+          },
+          {
+            path: 'Children_Room',
+            component: () => import('@/pages/all-pages/children-room-page.vue'),
+            name: 'Children_page'
+          },
+          {
+            path: 'Contacts',
+            component: () => import('@/pages/all-pages/contact-page.vue'),
+            name: 'Contacts_page'
+          },
+          {
+            path: ':PagesId',
+            component: () => import('@/pages/all-pages/add-new-page'),
+            name: 'Pages_Element'
+          }
+        ]
       },
       {
         path: 'Users',
